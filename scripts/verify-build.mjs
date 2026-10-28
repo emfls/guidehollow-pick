@@ -26,7 +26,7 @@ if (publishedSlugs.length > 0 && !category.includes('href="/guides/')) throw new
 for (const slug of publishedSlugs) {
   const page = read(`guides/${slug}/index.html`);
   if (!page.includes('자료 및 출처') || !page.includes('noindex, follow')) throw new Error('Published guide missing sources or indexing guard: ' + slug);
-  if (/<p[^>]*>[^<]*\\*\\*[^<]*<\\/p>/.test(page)) throw new Error('Unrendered Markdown emphasis in article paragraph: ' + slug);
+  if (page.includes('**')) throw new Error('Unrendered Markdown emphasis in article page: ' + slug);
   if (!page.includes('href="https://') || !page.includes('제품')) throw new Error('Published guide may be incomplete: ' + slug);
   if (!page.includes('id="summary-title"') || !page.includes('class="article-layout"') || !page.includes('이 글의 목차')) throw new Error('Guide reading UI missing: ' + slug);
   if (!page.includes('id="sources"')) throw new Error('Sources landmark missing: ' + slug);
