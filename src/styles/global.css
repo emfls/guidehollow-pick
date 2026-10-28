@@ -133,3 +133,6 @@ a.card:hover{border-color:var(--brand);transform:translateY(-2px)}
  .footer-links{margin-top:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}a.card{transition:none}}
+
+/* Explicit, verified product-only imagery from a Coupang Partners static HTML tag. */
+.partner-product-image{display:block;width:100%;max-height:230px;object-fit:contain;object-position:center;margin:0 auto 15px;border-radius:9px;background:#fff}

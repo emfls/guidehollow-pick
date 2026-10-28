@@ -49,3 +49,7 @@ GitHub Pages prohibits hosting websites whose primary purpose is facilitating co
 A separate database has been created: https://app.notion.com/p/f84bd960bef542dc8649881b7d4b839f
 
 See `docs/notion-queue-setup.ko.md`. A manually triggered, **read-only** GitHub Actions workflow previews approved rows. It requires a Notion integration shared with the new database and a separate `NOTION_PICK_TOKEN` GitHub Actions secret. No automated publishing or cron is enabled yet.
+
+## Product-first affiliate policy
+
+Do not select products just to add commission links. See `docs/product-verification.ko.md` for the mandatory review and exact SKU match checklist. Curated product-level HTML `<a>` snippets are safely parsed (never raw-rendered); dynamic banners, scripts and iframes are rejected until replaced with a model-matched partner URL. CI runs `scripts/test-partner-code.mjs` and publication schema requires official model, independent evidence, recorded verification and disclosure.
