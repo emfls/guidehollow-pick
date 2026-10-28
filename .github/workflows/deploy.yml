@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - name: Notion queue parser self-test (offline)
+        run: python3 scripts/notion_queue_preview.py --self-test
       - name: Install dependencies
         run: npm ci
       - name: Astro type check

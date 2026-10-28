@@ -1,0 +1,23 @@
+name: GuideHollow Pick — Notion queue preview (read only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Queue validator self-test
+        run: python scripts/notion_queue_preview.py --self-test
+      - name: Preview independent Pick queue (no publication)
+        env:
+          NOTION_PICK_TOKEN: ${{ secrets.NOTION_PICK_TOKEN }}
+        run: python scripts/notion_queue_preview.py

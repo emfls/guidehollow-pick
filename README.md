@@ -43,3 +43,9 @@ Keep existing apex, www and unrelated DNS records unchanged. In Settings > Pages
 Example `sample-draft.md` is a draft and is not publicly rendered. For each real article, verify facts, official sources, ad disclosures and product links before setting `draft: false`. Update `site.indexingEnabled` only after the site is ready for public search indexing. No Notion scheduling or affiliate credentials are configured yet.
 
 GitHub Pages prohibits hosting websites whose primary purpose is facilitating commercial transactions. Review the GitHub Pages terms before running the property as a commercial affiliate site.
+
+## Dedicated Notion queue (setup stage)
+
+A separate database has been created: https://app.notion.com/p/f84bd960bef542dc8649881b7d4b839f
+
+See `docs/notion-queue-setup.ko.md`. A manually triggered, **read-only** GitHub Actions workflow previews approved rows. It requires a Notion integration shared with the new database and a separate `NOTION_PICK_TOKEN` GitHub Actions secret. No automated publishing or cron is enabled yet.
