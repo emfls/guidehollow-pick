@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import { site } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const {
+  title = '구매 전 확인할 기준',
+  description = site.description,
+  noindex = false,
+} = Astro.props;
+const pageTitle = title === site.name ? site.name : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+const robots = !site.indexingEnabled || noindex ? 'noindex, follow' : 'index, follow';
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <div class="container top">
+        <a class="logo" href="/" aria-label="GuideHollow Pick 홈페이지">GUIDEHOLLOW <span>PICK</span></a>
+        <nav aria-label="주요 메뉴">
+          <a href="/#categories">카테고리</a>
+          <a href="/about/">운영 원칙</a>
+          <a href="/disclosure/">광고 안내</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© 2026 GuideHollow Pick · 한국어 쇼핑 정보</span>
+        <div class="footer-links">
+          <a href="/about/">사이트 소개</a>
+          <a href="/disclosure/">광고 안내</a>
+          <a href="/privacy/">개인정보 안내</a>
+          <a href="https://guidehollow.com/" rel="noopener noreferrer">GuideHollow</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
