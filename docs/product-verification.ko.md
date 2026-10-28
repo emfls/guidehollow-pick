@@ -67,3 +67,11 @@ products:
 - 쿠팡파트너스 공식 링크·배너 가이드: https://partners.coupangcdn.com/partners-guide/partners-guide-20241202161107.pdf
 - 공정거래위원회 경제적 이해관계 공개 지침: https://case.ftc.go.kr/com/dscv/dscvHtmlView.do?docCnvrMnNo=14914&docId=20251203165009524429
 - 쿠팡파트너스 운영정책: https://coupang-partners.tistory.com/entry/쿠팡-마케팅-제휴-프로그램-운영정책
+
+## 독립된 Notion 제품 검증 대장
+
+- [GuideHollow Pick | 제품 검증 대장](https://app.notion.com/p/9c19a9ce134b4c1189641d1c7d45cebf)
+- 모델별로 제조사공식URL, 독립검증자료, 장점·단점, 정확한 모델번호, 사용 조건, 자료 확인일, 쿠팡링크확인일을 기재한다.
+- 해당 대장의 `검증상태=승인`이며 `모델옵션일치`까지 참인 제품만 원고에 추천 제품과 제휴 링크로 등록한다.
+- 대장 상태만 승인으로 표시했다고 실제 검증이 완료되는 것은 아니다. 원본 자료와 링크의 모델명·옵션을 재확인하고 Astro 원고의 `verified`·`partnerProductMatched` 상태도 맞춘다.
+- 원고 대기열([GuideHollow Pick 원고 대기열](https://app.notion.com/p/f84bd960bef542dc8649881b7d4b839f))과 제품 검증 대장은 **독립된 DB**다.

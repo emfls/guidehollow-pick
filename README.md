@@ -53,3 +53,5 @@ See `docs/notion-queue-setup.ko.md`. A manually triggered, **read-only** GitHub 
 ## Product-first affiliate policy
 
 Do not select products just to add commission links. See `docs/product-verification.ko.md` for the mandatory review and exact SKU match checklist. Curated product-level HTML `<a>` snippets are safely parsed (never raw-rendered); dynamic banners, scripts and iframes are rejected until replaced with a model-matched partner URL. CI runs `scripts/test-partner-code.mjs` and publication schema requires official model, independent evidence, recorded verification and disclosure.
+
+Product evidence ledger (Notion): https://app.notion.com/p/9c19a9ce134b4c1189641d1c7d45cebf
