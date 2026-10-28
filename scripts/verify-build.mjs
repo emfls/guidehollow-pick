@@ -16,6 +16,8 @@ if (!home.includes('noindex, follow')) throw new Error('Indexing safety guard mi
 if (!home.includes('<meta name="naver-site-verification" content="84cf9dd15c0a888f0516823fa7a1908e157c4d7f"')) throw new Error('Naver site ownership verification meta tag missing');
 if (!home.includes('https://pick.guidehollow.com/')) throw new Error('Canonical host missing');
 if (!home.includes('href="/category/appliances/"') || !home.includes('href="/category/cleaning/"') || !home.includes('href="/category/kitchen/"')) throw new Error('Category navigation missing');
+if (!home.includes('aria-labelledby="hero-title"') || !home.includes('id="latest"') || !home.includes('id="categories"')) throw new Error('Homepage scan order and landmarks missing');
+if (!home.includes('검증되지 않은 제품은 추천하지 않습니다') || !home.includes('추천에 앞서 검증합니다')) throw new Error('Evidence-first trust signals missing');
 const category=read('category/appliances/index.html');
 const guideDir = join('dist', 'guides');
 const publishedSlugs = existsSync(guideDir) ? readdirSync(guideDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : [];
@@ -25,6 +27,8 @@ for (const slug of publishedSlugs) {
   const page = read(`guides/${slug}/index.html`);
   if (!page.includes('자료 및 출처') || !page.includes('noindex, follow')) throw new Error('Published guide missing sources or indexing guard: ' + slug);
   if (!page.includes('href="https://') || !page.includes('제품')) throw new Error('Published guide may be incomplete: ' + slug);
+  if (!page.includes('id="summary-title"') || !page.includes('class="article-layout"') || !page.includes('이 글의 목차')) throw new Error('Guide reading UI missing: ' + slug);
+  if (!page.includes('id="sources"')) throw new Error('Sources landmark missing: ' + slug);
   if (!home.includes(`/guides/${slug}/`)) throw new Error('Published guide missing from homepage: ' + slug);
 }
 if (read('CNAME').trim()!=='pick.guidehollow.com') throw new Error('CNAME incorrect');
@@ -36,4 +40,4 @@ for (const slug of publishedSlugs) {
 }
 if (sitemap.includes('sample-draft')) throw new Error('Draft leaked into sitemap');
 if (existsSync(join('dist','guides','sample-draft','index.html'))) throw new Error('Draft leaked as public page');
-console.log('GuideHollow Pick verified: homepage, 3 categories, SEO, disclosure routes, draft isolation.');
+console.log('GuideHollow Pick verified: readable homepage, 3 categories, article TOC, sources, SEO and draft isolation.');

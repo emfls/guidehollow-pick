@@ -10,7 +10,8 @@ export async function getStaticPaths() {
   return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const sections = headings.filter((heading) => heading.depth === 2).slice(0, 12);
 const date = entry.data.publishedDate.toISOString().slice(0,10);
 const category = categories.find((item) => item.id === entry.data.category)!;
 const products = entry.data.products.map((product) => ({
@@ -19,85 +20,123 @@ const products = entry.data.products.map((product) => ({
 const affiliate = entry.data.affiliate;
 ---
 <Base title={entry.data.title} description={entry.data.description}>
-  <article class="container prose">
-    {affiliate && (
-      <div class="ad-disclosure" role="note" aria-label="광고·제휴 고지">
-        <strong>[광고·제휴 링크 안내]</strong> 이 글은 쿠팡파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.
-      </div>
-    )}
-    <a href={`/category/${category.id}/`} class="eyebrow" style="text-decoration:none">{category.title} 구매 가이드</a>
-    <h1>{entry.data.title}</h1>
-    <p class="lead">{entry.data.description}</p>
-    <p class="meta">발행 {date}{entry.data.updatedDate ? ` · 수정 ${entry.data.updatedDate.toISOString().slice(0,10)}` : ''}</p>
-    {entry.data.keyTakeaways.length > 0 && (
-      <aside class="article-summary" aria-label="핵심 요약">
-        <h2>먼저 확인할 핵심</h2>
-        <ul>{entry.data.keyTakeaways.map((point) => <li>{point}</li>)}</ul>
-      </aside>
-    )}
-    {products.length > 0 && (
-      <nav class="article-nav" aria-label="글 목차">
-        <a href="#guide-content">선택 기준</a>
-        <a href="#comparison">제품별 비교</a>
-        <a href="#sources">자료 및 출처</a>
+  <article class="container guide-article">
+    <div class="article-lead">
+      <nav class="breadcrumb" aria-label="현재 위치">
+        <a href="/">홈</a><span aria-hidden="true">/</span>
+        <a href={`/category/${category.id}/`}>{category.title}</a><span aria-hidden="true">/</span>
+        <span>구매 가이드</span>
       </nav>
-    )}
-    <div id="guide-content" class="article-body">
-      <Content />
+      {affiliate && (
+        <p class="ad-disclosure" role="note" aria-label="광고·제휴 고지">
+          <strong>광고·제휴 링크 안내</strong> 이 글은 쿠팡파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.
+        </p>
+      )}
+      <span class="tag">{category.title}</span>
+      <h1>{entry.data.title}</h1>
+      <p class="article-subtitle">{entry.data.description}</p>
+      <div class="article-meta">
+        <span>발행 {date}</span>
+        {entry.data.updatedDate && <span>수정 {entry.data.updatedDate.toISOString().slice(0,10)}</span>}
+        <span>출처 {entry.data.sources.length}곳</span>
+        <span>{affiliate ? '제휴 링크 포함' : '제휴 링크 없음'}</span>
+      </div>
     </div>
-    {products.length > 0 && (
-      <section id="comparison" aria-labelledby="comparison-title">
-        <h2 id="comparison-title">제품별 선택 기준 비교</h2>
-        <p>아래 설명은 확인한 자료와 각 제품의 적합한 사용 환경을 정리한 것입니다. 실사용 테스트를 진행했다는 의미가 아닙니다.</p>
-        {products.length > 1 && (
-          <div class="comparison-scroll" tabindex="0" role="region" aria-label="제품 비교표, 좌우로 스크롤 가능">
-            <table class="comparison-table">
-              <thead><tr><th scope="col">제품</th><th scope="col">적합한 사용 환경</th><th scope="col">구매 전 주의할 점</th></tr></thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr>
-                    <th scope="row">{product.name}</th>
-                    <td>{product.bestFor}</td>
-                    <td>{product.limitations.join(' · ')}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+    <div class="article-layout">
+      <div class="article-main">
+        {entry.data.keyTakeaways.length > 0 && (
+          <section class="article-summary" aria-labelledby="summary-title">
+            <span class="article-summary__label">핵심만 먼저</span>
+            <h2 id="summary-title">이 글의 결론</h2>
+            <ul>{entry.data.keyTakeaways.map((point) => <li>{point}</li>)}</ul>
+          </section>
         )}
-        <div class="product-grid">
-          {products.map((product) => (
-            <section class="product-card" aria-label={product.name}>
-              {product.partner?.imageUrl && (
-                <img class="partner-product-image" src={product.partner.imageUrl} alt={product.name} loading="lazy" decoding="async" referrerpolicy="no-referrer" />
-              )}
-              <span class="product-label">{product.label}</span>
-              <h3>{product.name}</h3>
-              <p>{product.bestFor}</p>
-              <h4>확인한 장점</h4>
-              <ul>{product.strengths.map((item) => <li>{item}</li>)}</ul>
-              <h4>구매 전 유의사항</h4>
-              <ul>{product.limitations.map((item) => <li>{item}</li>)}</ul>
-              <div class="buttons">
-                <a class="button-link secondary" href={product.officialUrl} target="_blank" rel="noopener noreferrer">공식 사양 확인</a>
-                {product.partner && (
-                  <a class="button-link primary" href={product.partner.url} target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label={`${product.name} 제휴 판매 페이지 열기`}>쿠팡에서 확인 · 제휴</a>
-                )}
-              </div>
-              <p class="review-date">검증한 정확한 모델: {product.modelNumber ?? '확인 전'} · 자료 확인일: {product.checkedAt.toISOString().slice(0,10)} · 가격·재고는 판매처에서 재확인</p>
-            </section>
-          ))}
+        {sections.length > 0 && (
+          <details class="mobile-toc">
+            <summary>이 글의 목차 <span aria-hidden="true">⌄</span></summary>
+            <ol>{sections.map((section) => (
+              <li><a href={`#${section.slug}`}>{section.text}</a></li>
+            ))}</ol>
+          </details>
+        )}
+        <div id="guide-content" class="article-body readable-content">
+          <Content />
         </div>
-      </section>
-    )}
-    <section class="article-sources" id="sources" aria-labelledby="sources-title">
-      <h2 id="sources-title">자료 및 출처</h2>
-      <ul>
-        {entry.data.sources.map((source) => (
-          <li><a href={source} rel="noopener noreferrer" target="_blank">{source}</a></li>
-        ))}
-      </ul>
-    </section>
-    <p class="final-note">본 글은 확인된 자료에 근거한 구매 가이드이며 제품의 가격, 사양, 재고와 제휴 조건은 변경될 수 있습니다. 구매 전 공식 자료 및 판매 페이지를 다시 확인하세요.</p>
+        {products.length > 0 && (
+          <section id="comparison" class="verified-products" aria-labelledby="comparison-title">
+            <span class="section-kicker">EVIDENCE FIRST</span>
+            <h2 id="comparison-title">검증한 제품 비교</h2>
+            <p>확인 가능한 정보와 적합한 사용 환경을 기준으로 골랐습니다. 직접 사용하지 않았다면 실사용 후기라고 표현하지 않습니다.</p>
+            {products.length > 1 && (
+              <>
+                <p class="table-hint">표는 좌우로 움직여 확인할 수 있습니다.</p>
+                <div class="comparison-scroll" tabindex="0" role="region" aria-label="제품 비교표, 좌우로 스크롤 가능">
+                  <table class="comparison-table">
+                    <thead><tr><th scope="col">제품</th><th scope="col">적합한 사용 환경</th><th scope="col">구매 전 주의할 점</th></tr></thead>
+                    <tbody>{products.map((product) => (
+                      <tr><th scope="row">{product.name}</th><td>{product.bestFor}</td><td>{product.limitations.join(' · ')}</td></tr>
+                    ))}</tbody>
+                  </table>
+                </div>
+              </>
+            )}
+            <div class="product-grid">
+              {products.map((product) => (
+                <section class="product-card" aria-label={product.name}>
+                  {product.partner?.imageUrl && (
+                    <img class="partner-product-image" src={product.partner.imageUrl} alt={product.name} loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                  )}
+                  <div class="product-card__eyebrow">검증된 모델 · {product.label}</div>
+                  <h3>{product.name}</h3>
+                  <p class="product-card__fit">{product.bestFor}</p>
+                  <div class="product-card__details">
+                    <div><h4>선택할 이유</h4><ul>{product.strengths.map((item) => <li>{item}</li>)}</ul></div>
+                    <div><h4>고려할 단점</h4><ul>{product.limitations.map((item) => <li>{item}</li>)}</ul></div>
+                  </div>
+                  <div class="product-card__verification">
+                    <strong>검증한 근거</strong>
+                    <p>{product.verificationNotes}</p>
+                    <a href={product.independentSources[0]} target="_blank" rel="noopener noreferrer">외부 평가 자료 확인 <span aria-hidden="true">↗</span></a>
+                  </div>
+                  <div class="buttons">
+                    <a class="button-link secondary" href={product.officialUrl} target="_blank" rel="noopener noreferrer">제조사 공식 사양</a>
+                    {product.partner && (
+                      <a class="button-link primary" href={product.partner.url} target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label={`${product.name} 쿠팡파트너스 제휴 판매 페이지 열기`}>쿠팡에서 제품 확인 <span aria-hidden="true">↗</span></a>
+                    )}
+                  </div>
+                  <p class="review-date">모델번호 {product.modelNumber} · 자료 확인 {product.checkedAt.toISOString().slice(0,10)} · 가격·재고는 판매처에서 다시 확인하세요.</p>
+                </section>
+              ))}
+            </div>
+          </section>
+        )}
+        <section class="article-sources" id="sources" aria-labelledby="sources-title">
+          <span class="section-kicker">REFERENCES</span>
+          <h2 id="sources-title">자료 및 출처</h2>
+          <p>공식 안내와 외부 검증 자료를 확인할 수 있습니다.</p>
+          <ol class="source-list">
+            {entry.data.sources.map((source) => (
+              <li><a href={source} rel="noopener noreferrer" target="_blank" title={source}>
+                <span>{new URL(source).hostname.replace(/^www\./,'')}</span><span aria-hidden="true">↗</span>
+              </a></li>
+            ))}
+          </ol>
+        </section>
+        <p class="final-note">제품의 사양, 가격, 재고, 제휴 조건은 변경될 수 있습니다. 구매 전 제조사 공식 자료와 판매처의 최신 정보를 다시 확인하세요.</p>
+        <div class="article-end"><a href={`/category/${category.id}/`} class="button-link secondary">다른 {category.title} 가이드 보기 <span aria-hidden="true">→</span></a></div>
+      </div>
+      {sections.length > 0 && (
+        <aside class="article-aside" aria-label="본문 목차">
+          <div class="toc-card">
+            <span class="toc-card__eyebrow">ON THIS PAGE</span>
+            <h2>이 글의 목차</h2>
+            <ol>{sections.map((section,i) => (
+              <li><a href={`#${section.slug}`}><span>{String(i+1).padStart(2,'0')}</span>{section.text}</a></li>
+            ))}</ol>
+            <a class="toc-card__back" href="#main">맨 위로 ↑</a>
+          </div>
+        </aside>
+      )}
+    </div>
   </article>
 </Base>

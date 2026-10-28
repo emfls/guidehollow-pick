@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categories } from '../data/categories';
+interface Props {
+  guide: CollectionEntry<'guides'>;
+  featured?: boolean;
+}
+const { guide, featured = false } = Astro.props;
+const category = categories.find((item) => item.id === guide.data.category);
+const date = guide.data.publishedDate.toISOString().slice(0,10);
+---
+<a class:list={['guide-tile', {'guide-tile--featured': featured}]} href={`/guides/${guide.id}/`}>
+  <div class="guide-tile__top">
+    <span class="tag">{category?.title ?? '구매 가이드'}</span>
+    <span class="guide-tile__date">{date}</span>
+  </div>
+  <h3>{guide.data.title}</h3>
+  <p>{guide.data.description}</p>
+  <span class="guide-tile__action">가이드 읽기 <span aria-hidden="true">→</span></span>
+</a>

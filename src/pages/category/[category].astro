@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import GuideCard from '../../components/GuideCard.astro';
 import { categories } from '../../data/categories';
 import { getPublishedGuides } from '../../lib/guides';
 export function getStaticPaths() {
@@ -11,7 +12,8 @@ const guides = (await getPublishedGuides()).filter((guide) => guide.data.categor
 <Base title={category.title} description={category.description}>
   <div class="container">
     <header class="page-intro">
-      <span class="eyebrow">{category.eyebrow}</span>
+      <div class="breadcrumb"><a href="/">홈</a><span aria-hidden="true">/</span><span>{category.title}</span></div>
+      <span class="eyebrow">제품 유형별 구매 가이드</span>
       <h1>{category.headline}</h1>
       <p class="lead">{category.description}</p>
     </header>
@@ -20,27 +22,24 @@ const guides = (await getPublishedGuides()).filter((guide) => guide.data.categor
         <a href={`/category/${item.id}/`} aria-current={category.id===item.id ? 'page' : undefined}>{item.title}</a>
       ))}
     </nav>
-    <section class="section" aria-labelledby="category-guide-title">
+    <section class="section category-results" aria-labelledby="category-guide-title">
       <div class="section-head">
-        <small>BUYING GUIDES</small>
-        <h2 id="category-guide-title">{category.title} 구매 가이드</h2>
-        <p>비교 근거를 확인한 콘텐츠를 발행일 순서로 소개합니다.</p>
+        <div>
+          <span class="section-kicker">BUYING GUIDES</span>
+          <h2 id="category-guide-title">{category.title} 구매 가이드</h2>
+          <p>비교 근거를 확인한 콘텐츠를 발행일 순서로 소개합니다.</p>
+        </div>
+        <span class="result-count">{guides.length}개 글</span>
       </div>
       {guides.length > 0 ? (
-        <div class="guide-list">
-          {guides.map((guide) => (
-            <a class="list-item" href={`/guides/${guide.id}/`}>
-              <span class="meta">{guide.data.publishedDate.toISOString().slice(0,10)}</span>
-              <h3>{guide.data.title}</h3>
-              <p>{guide.data.description}</p>
-            </a>
-          ))}
+        <div class="guide-grid">
+          {guides.map((guide) => <GuideCard guide={guide}/>)}
         </div>
       ) : (
         <div class="empty-state">
-          <h2>아직 공개된 가이드가 없습니다</h2>
+          <h3>아직 공개된 가이드가 없습니다</h3>
           <p>확인되지 않은 제품 순위나 가격 대신, 검증된 정보가 준비되면 이곳에 공개합니다.</p>
-          <a class="button-link secondary" href="/#categories">다른 카테고리 둘러보기</a>
+          <a class="text-link" href="/#categories">다른 카테고리 둘러보기 <span aria-hidden="true">→</span></a>
         </div>
       )}
     </section>
