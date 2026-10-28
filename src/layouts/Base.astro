@@ -15,13 +15,14 @@ const {
 const pageTitle = title === site.name ? site.name : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 const robots = !site.indexingEnabled || noindex ? 'noindex, follow' : 'index, follow';
+const path = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f6f7f4" />
+    <meta name="theme-color" content="#f7f8f5" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
@@ -38,20 +39,22 @@ const robots = !site.indexingEnabled || noindex ? 'noindex, follow' : 'index, fo
     <header class="site-header">
       <div class="container top">
         <a class="logo" href="/" aria-label="GuideHollow Pick 홈페이지">GUIDEHOLLOW <span>PICK</span></a>
-        <nav aria-label="주요 메뉴">
+        <nav class="main-nav" aria-label="주요 메뉴">
           <a href="/#categories">카테고리</a>
-          <a href="/about/">운영 원칙</a>
-          <a href="/disclosure/">광고 안내</a>
+          <a href="/category/appliances/" aria-current={path.startsWith('/category/appliances/') ? 'page' : undefined}>생활가전</a>
+          <a href="/category/cleaning/" aria-current={path.startsWith('/category/cleaning/') ? 'page' : undefined}>청소·관리</a>
+          <a href="/category/kitchen/" aria-current={path.startsWith('/category/kitchen/') ? 'page' : undefined}>주방</a>
+          <a href="/about/">소개</a>
         </nav>
       </div>
     </header>
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <div class="container footer-inner">
-        <span>© 2026 GuideHollow Pick · 한국어 쇼핑 정보</span>
+        <span>© 2026 GuideHollow Pick · 구매 전 비교 가이드</span>
         <div class="footer-links">
-          <a href="/about/">사이트 소개</a>
-          <a href="/disclosure/">광고 안내</a>
+          <a href="/about/">편집 원칙</a>
+          <a href="/disclosure/">광고·제휴 고지</a>
           <a href="/privacy/">개인정보 안내</a>
           <a href="https://guidehollow.com/" rel="noopener noreferrer">GuideHollow</a>
         </div>

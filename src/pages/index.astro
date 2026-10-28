@@ -5,65 +5,91 @@ import { getPublishedGuides } from '../lib/guides';
 const latest = (await getPublishedGuides()).slice(0, 6);
 ---
 <Base title="구매 전 확인할 기준">
-  <section class="hero container">
-    <span class="eyebrow">GuideHollow의 한국어 쇼핑 정보</span>
-    <h1>사기 전에,<br /><em>기준부터</em> 살펴보세요.</h1>
-    <p class="lead">생활용품과 소형 가전의 구매 판단에 필요한 정보를 정리합니다. 제품의 장점뿐 아니라 세척, 소모품, 유지 비용처럼 구매 후에도 중요한 조건을 함께 살펴봅니다.</p>
-    <p class="note">사이트 준비 단계 · 검수된 개별 제품 비교 글은 순차적으로 공개할 예정입니다.</p>
-  </section>
-  <section class="block container" id="categories" aria-labelledby="categories-title">
-    <div class="section-head">
-      <small>BUYING CRITERIA</small>
-      <h2 id="categories-title">구매 전 확인할 질문</h2>
-      <p>제품 이름보다 먼저 자신의 사용 환경에 맞는 기준을 확인하세요.</p>
-    </div>
-    <div class="grid">
-      {categories.map((category) => (
-        <a class="card" href={`/category/${category.id}/`}>
-          <span class="n">{category.eyebrow}</span>
-          <h3>{category.example}</h3>
-          <p>{category.description}</p>
-        </a>
-      ))}
-    </div>
-  </section>
-  {latest.length > 0 && (
-    <section class="block container" aria-labelledby="latest-title">
-      <div class="section-head">
-        <small>LATEST GUIDES</small>
-        <h2 id="latest-title">최근 구매 가이드</h2>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <span class="eyebrow">구매 전에 읽는 생활용품 선택 가이드</span>
+        <h1 id="hero-title">사기 전에,<br /><em>기준부터</em> 살펴보세요.</h1>
+        <p class="lead">광고 문구보다 중요한 건 실제 사용 조건입니다. 세척, 설치 공간, 관리 부담과 유지 비용까지, 구입 전에 확인해야 할 정보를 모았습니다.</p>
+        <div class="hero-actions">
+          <a class="button-link primary" href="#categories">카테고리 살펴보기</a>
+          <a class="button-link secondary" href="/about/">비교 원칙 알아보기</a>
+        </div>
       </div>
-      <div class="list">
-        {latest.map((guide) => (
-          <a class="list-item" href={`/guides/${guide.id}/`}>
-            <h3>{guide.data.title}</h3>
-            <p>{guide.data.description}</p>
+      <aside class="hero-panel" aria-label="구매 전 점검 항목">
+        <small>BEFORE YOU BUY</small>
+        <h2>좋은 선택의 첫 질문</h2>
+        <ul>
+          <li>우리 집 공간과 사용 빈도에 맞을까?</li>
+          <li>세척과 소모품 관리가 쉬울까?</li>
+          <li>추가 비용이나 불편한 점은 없을까?</li>
+          <li>제조사 자료로 확인할 수 있을까?</li>
+        </ul>
+      </aside>
+    </section>
+    <section class="section" id="categories" aria-labelledby="categories-title">
+      <div class="section-head">
+        <small>EXPLORE BY CATEGORY</small>
+        <h2 id="categories-title">필요한 제품부터 비교하세요</h2>
+        <p>구매 의도와 사용 환경에 따라 달라지는 선택 기준을 정리합니다.</p>
+      </div>
+      <div class="grid">
+        {categories.map((category) => (
+          <a class="card" href={`/category/${category.id}/`}>
+            <span class="n">{category.eyebrow}</span>
+            <h3>{category.example}</h3>
+            <p>{category.description}</p>
+            <span class="card-more">카테고리 보기 →</span>
           </a>
         ))}
       </div>
     </section>
-  )}
-  <section class="block container" aria-labelledby="method-title">
-    <div class="method">
+    <section class="section" aria-labelledby="latest-title">
       <div class="section-head">
-        <small>EDITORIAL STANDARD</small>
-        <h2 id="method-title">이 사이트의 작성 원칙</h2>
-        <p>구매 결정에 실제로 도움이 되는 정보를 우선합니다.</p>
+        <small>LATEST GUIDES</small>
+        <h2 id="latest-title">새로운 구매 가이드</h2>
+        <p>출처와 비교 기준을 검토한 글을 공개합니다.</p>
       </div>
-      <ol>
-        <li><strong>확인 가능한 정보:</strong> 제품 사양은 공식 제조사 자료와 판매 정보를 출처와 함께 확인합니다.</li>
-        <li><strong>장점과 한계:</strong> 사용 환경에 따라 적합하지 않은 조건도 함께 설명합니다.</li>
-        <li><strong>시점 표시:</strong> 가격이나 판매 조건처럼 바뀔 수 있는 정보는 확인 시점을 명시합니다.</li>
-        <li><strong>후기 구분:</strong> 직접 사용하지 않은 제품을 실제 사용 후기처럼 표현하지 않습니다.</li>
-      </ol>
-    </div>
-  </section>
-  <section class="block container" aria-labelledby="advertising-title">
-    <div class="section-head">
-      <small>DISCLOSURE</small>
-      <h2 id="advertising-title">광고 및 제휴 링크 안내</h2>
-      <p>향후 일부 게시물에 제휴 링크가 포함될 수 있습니다. 해당 게시물에는 구매에 따른 수수료 발생 가능성을 글의 시작 부분에 명확히 고지합니다.</p>
-    </div>
-    <p class="disclosure">현재 이 초기 페이지에는 제휴 구매 링크가 없습니다. 콘텐츠, 가격, 판매 여부는 추후 개별 원고에서 검증 후 제공할 예정입니다.</p>
-  </section>
+      {latest.length > 0 ? (
+        <div class="guide-list">
+          {latest.map((guide) => (
+            <a class="list-item" href={`/guides/${guide.id}/`}>
+              <span class="meta">{guide.data.publishedDate.toISOString().slice(0,10)}</span>
+              <h3>{guide.data.title}</h3>
+              <p>{guide.data.description}</p>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <h2>첫 비교 가이드를 준비하고 있습니다</h2>
+          <p>구체적인 상품 정보와 공식 자료를 확인한 뒤 글을 게시합니다. 아직 판매 링크나 실제 제품 추천은 제공하지 않습니다.</p>
+          <a class="button-link secondary" href="/about/">작성 기준 확인하기</a>
+        </div>
+      )}
+    </section>
+    <section class="section" aria-labelledby="principles-title">
+      <div class="method">
+        <div class="section-head">
+          <small>HOW WE COMPARE</small>
+          <h2 id="principles-title">이렇게 비교합니다</h2>
+          <p>순위나 할인 문구보다 구매 판단에 필요한 근거를 우선합니다.</p>
+        </div>
+        <ol>
+          <li><strong>조건 설정</strong> — 예산보다 먼저 공간, 사용 습관, 관리 시간을 확인합니다.</li>
+          <li><strong>정보 교차 확인</strong> — 제품 사양은 제조사·공식 판매처 자료를 우선합니다.</li>
+          <li><strong>장점과 단점 병기</strong> — 불편하거나 맞지 않는 조건도 숨기지 않습니다.</li>
+          <li><strong>제휴 사실 고지</strong> — 유료 제휴 링크가 있는 글은 첫 부분에 표시합니다.</li>
+        </ol>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="disclosure-title">
+      <div class="section-head">
+        <small>TRANSPARENCY</small>
+        <h2 id="disclosure-title">광고 여부를 먼저 알려드립니다</h2>
+        <p>일부 게시물에 제휴 링크가 포함될 수 있으며, 이 경우 글의 처음에서 수익 관계를 명확히 고지합니다.</p>
+      </div>
+      <p class="trust-line">현재 준비 중인 초기 사이트에는 쿠팡 구매 링크가 없습니다. <a href="/disclosure/" style="color:var(--brand);text-decoration:underline">제휴 운영 기준 읽기</a></p>
+    </section>
+  </div>
 </Base>

@@ -1,35 +1,97 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { render } from 'astro:content';
+import { categories } from '../../data/categories';
 import { getPublishedGuides } from '../../lib/guides';
+
 export async function getStaticPaths() {
   const entries = await getPublishedGuides();
   return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const date = entry.data.publishedDate.toISOString().slice(0, 10);
-const disclosure = '이 글에는 쿠팡파트너스 제휴 링크가 포함될 수 있으며, 해당 링크를 통한 구매 시 일정액의 수수료를 제공받을 수 있습니다.';
+const date = entry.data.publishedDate.toISOString().slice(0,10);
+const category = categories.find((item) => item.id === entry.data.category)!;
+const products = entry.data.products;
+const affiliate = entry.data.affiliate;
 ---
 <Base title={entry.data.title} description={entry.data.description}>
   <article class="container prose">
-    {entry.data.affiliate && (
-      <p class="note" role="note"><strong>[광고/제휴 고지]</strong> {disclosure}</p>
+    {affiliate && (
+      <div class="ad-disclosure" role="note" aria-label="광고·제휴 고지">
+        <strong>[광고·제휴 링크 안내]</strong> 이 글은 쿠팡파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.
+      </div>
     )}
+    <a href={`/category/${category.id}/`} class="eyebrow" style="text-decoration:none">{category.title} 구매 가이드</a>
     <h1>{entry.data.title}</h1>
     <p class="lead">{entry.data.description}</p>
-    <p class="meta">발행 {date}{entry.data.updatedDate ? ` · 갱신 ${entry.data.updatedDate.toISOString().slice(0,10)}` : ''}</p>
-    <Content />
-    {entry.data.sources.length > 0 && (
-      <section aria-labelledby="sources-title">
-        <h2 id="sources-title">자료 및 출처</h2>
-        <ul>
-          {entry.data.sources.map((source) => (
-            <li><a href={source} rel="noopener noreferrer" target="_blank">{source}</a></li>
+    <p class="meta">발행 {date}{entry.data.updatedDate ? ` · 수정 ${entry.data.updatedDate.toISOString().slice(0,10)}` : ''}</p>
+    {entry.data.keyTakeaways.length > 0 && (
+      <aside class="article-summary" aria-label="핵심 요약">
+        <h2>먼저 확인할 핵심</h2>
+        <ul>{entry.data.keyTakeaways.map((point) => <li>{point}</li>)}</ul>
+      </aside>
+    )}
+    {products.length > 0 && (
+      <nav class="article-nav" aria-label="글 목차">
+        <a href="#guide-content">선택 기준</a>
+        <a href="#comparison">제품별 비교</a>
+        <a href="#sources">자료 및 출처</a>
+      </nav>
+    )}
+    <div id="guide-content" class="article-body">
+      <Content />
+    </div>
+    {products.length > 0 && (
+      <section id="comparison" aria-labelledby="comparison-title">
+        <h2 id="comparison-title">제품별 선택 기준 비교</h2>
+        <p>아래 설명은 확인한 자료와 각 제품의 적합한 사용 환경을 정리한 것입니다. 실사용 테스트를 진행했다는 의미가 아닙니다.</p>
+        {products.length > 1 && (
+          <div class="comparison-scroll" tabindex="0" role="region" aria-label="제품 비교표, 좌우로 스크롤 가능">
+            <table class="comparison-table">
+              <thead><tr><th scope="col">제품</th><th scope="col">적합한 사용 환경</th><th scope="col">구매 전 주의할 점</th></tr></thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr>
+                    <th scope="row">{product.name}</th>
+                    <td>{product.bestFor}</td>
+                    <td>{product.limitations.join(' · ')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <div class="product-grid">
+          {products.map((product) => (
+            <section class="product-card" aria-label={product.name}>
+              <span class="product-label">{product.label}</span>
+              <h3>{product.name}</h3>
+              <p>{product.bestFor}</p>
+              <h4>확인한 장점</h4>
+              <ul>{product.strengths.map((item) => <li>{item}</li>)}</ul>
+              <h4>구매 전 유의사항</h4>
+              <ul>{product.limitations.map((item) => <li>{item}</li>)}</ul>
+              <div class="buttons">
+                <a class="button-link secondary" href={product.officialUrl} target="_blank" rel="noopener noreferrer">공식 사양 확인</a>
+                {product.affiliateUrl && (
+                  <a class="button-link primary" href={product.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label={`${product.name} 제휴 판매 페이지 열기`}>쿠팡에서 확인 · 제휴</a>
+                )}
+              </div>
+              <p class="review-date">자료 확인일: {product.checkedAt.toISOString().slice(0,10)} · 가격·재고는 판매처에서 재확인</p>
+            </section>
           ))}
-        </ul>
+        </div>
       </section>
     )}
-    <p class="disclosure">제품 사양과 판매 조건은 변경될 수 있습니다. 구매 전 공식 판매 페이지에서 최신 정보를 확인하세요.</p>
+    <section class="article-sources" id="sources" aria-labelledby="sources-title">
+      <h2 id="sources-title">자료 및 출처</h2>
+      <ul>
+        {entry.data.sources.map((source) => (
+          <li><a href={source} rel="noopener noreferrer" target="_blank">{source}</a></li>
+        ))}
+      </ul>
+    </section>
+    <p class="final-note">본 글은 확인된 자료에 근거한 구매 가이드이며 제품의 가격, 사양, 재고와 제휴 조건은 변경될 수 있습니다. 구매 전 공식 자료 및 판매 페이지를 다시 확인하세요.</p>
   </article>
 </Base>

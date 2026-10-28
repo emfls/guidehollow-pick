@@ -6,24 +6,43 @@ export function getStaticPaths() {
   return categories.map((category) => ({ params: { category: category.id }, props: { category } }));
 }
 const { category } = Astro.props;
-const guides = (await getPublishedGuides()).filter((g) => g.data.category === category.id);
+const guides = (await getPublishedGuides()).filter((guide) => guide.data.category === category.id);
 ---
 <Base title={category.title} description={category.description}>
-  <div class="container prose">
-    <span class="eyebrow">{category.eyebrow}</span>
-    <h1>{category.headline}</h1>
-    <p class="lead">{category.description}</p>
-    {guides.length === 0 ? (
-      <p class="note">공식 자료 검수가 완료된 글부터 순차적으로 공개합니다.</p>
-    ) : (
-      <div class="list">
-        {guides.map((guide) => (
-          <a class="list-item" href={`/guides/${guide.id}/`}>
-            <h3>{guide.data.title}</h3>
-            <p>{guide.data.description}</p>
-          </a>
-        ))}
+  <div class="container">
+    <header class="page-intro">
+      <span class="eyebrow">{category.eyebrow}</span>
+      <h1>{category.headline}</h1>
+      <p class="lead">{category.description}</p>
+    </header>
+    <nav class="category-tabs" aria-label="다른 상품 분야">
+      {categories.map((item) => (
+        <a href={`/category/${item.id}/`} aria-current={category.id===item.id ? 'page' : undefined}>{item.title}</a>
+      ))}
+    </nav>
+    <section class="section" aria-labelledby="category-guide-title">
+      <div class="section-head">
+        <small>BUYING GUIDES</small>
+        <h2 id="category-guide-title">{category.title} 구매 가이드</h2>
+        <p>비교 근거를 확인한 콘텐츠를 발행일 순서로 소개합니다.</p>
       </div>
-    )}
+      {guides.length > 0 ? (
+        <div class="guide-list">
+          {guides.map((guide) => (
+            <a class="list-item" href={`/guides/${guide.id}/`}>
+              <span class="meta">{guide.data.publishedDate.toISOString().slice(0,10)}</span>
+              <h3>{guide.data.title}</h3>
+              <p>{guide.data.description}</p>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <h2>아직 공개된 가이드가 없습니다</h2>
+          <p>확인되지 않은 제품 순위나 가격 대신, 검증된 정보가 준비되면 이곳에 공개합니다.</p>
+          <a class="button-link secondary" href="/#categories">다른 카테고리 둘러보기</a>
+        </div>
+      )}
+    </section>
   </div>
 </Base>
