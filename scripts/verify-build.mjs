@@ -13,6 +13,7 @@ function read(path) { return readFileSync(join('dist',path),'utf8'); }
 const home=read('index.html');
 if (!home.includes('사기 전에') || !home.includes('구매 전 점검 항목')) throw new Error('Updated homepage missing');
 if (!home.includes('noindex, follow')) throw new Error('Indexing safety guard missing');
+if (!home.includes('<meta name="naver-site-verification" content="84cf9dd15c0a888f0516823fa7a1908e157c4d7f"')) throw new Error('Naver site ownership verification meta tag missing');
 if (!home.includes('https://pick.guidehollow.com/')) throw new Error('Canonical host missing');
 if (!home.includes('href="/category/appliances/"') || !home.includes('href="/category/cleaning/"') || !home.includes('href="/category/kitchen/"')) throw new Error('Category navigation missing');
 const category=read('category/appliances/index.html');
