@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f4">
+  <meta name="description" content="GuideHollow Pick은 생활용품과 소형 가전을 고를 때 필요한 비교 기준과 관리 정보를 정리합니다.">
+  <meta name="robots" content="noindex, follow">
+  <title>GuideHollow Pick | 구매 전 확인할 기준</title>
+  <style>
+    :root { color-scheme: light; --ink:#132922; --muted:#61736a; --line:#dce5dc; --brand:#245943; --soft:#e8f0e9; --paper:#f6f7f4; --white:#fff; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif; line-height:1.75; word-break:keep-all; }
+    a { color:inherit; text-decoration:none; }
+    a:focus-visible { outline:3px solid var(--brand); outline-offset:4px; border-radius:5px; }
+    .container { width:min(1080px,calc(100% - 36px)); margin-inline:auto; }
+    header { border-bottom:1px solid var(--line); background:rgba(246,247,244,.96); }
+    .top { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:74px; }
+    .logo { font-size:1.05rem; letter-spacing:-.03em; font-weight:800; }
+    .logo span { color:var(--brand); font-weight:700; }
+    nav { display:flex; gap:20px; color:var(--muted); font-size:.86rem; }
+    nav a:hover { color:var(--brand); }
+    .hero { padding:92px 0 76px; }
+    .eyebrow { display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line); background:var(--white); border-radius:100px; padding:6px 13px; font-size:.79rem; color:var(--brand); font-weight:700; }
+    h1 { font-size:clamp(2.5rem,6vw,4.8rem); line-height:1.18; letter-spacing:-.065em; margin:24px 0; }
+    h1 em { color:var(--brand); font-style:normal; }
+    .lead { font-size:clamp(1.05rem,2.5vw,1.25rem); max-width:680px; color:var(--muted); }
+    .note { display:inline-block; margin-top:18px; padding:9px 13px; border-radius:10px; background:var(--soft); color:var(--brand); font-size:.83rem; }
+    section { padding:54px 0; }
+    .section-head { margin-bottom:27px; }
+    .section-head small { font-size:.77rem; letter-spacing:.14em; color:var(--brand); font-weight:800; }
+    h2 { font-size:clamp(1.65rem,3.5vw,2.4rem); letter-spacing:-.05em; line-height:1.35; margin:6px 0 10px; }
+    .section-head p { color:var(--muted); margin:0; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    .card { background:var(--white); border:1px solid var(--line); border-radius:18px; padding:26px 23px; min-height:220px; }
+    .card .n { color:var(--brand); font-size:.75rem; font-weight:800; letter-spacing:.12em; }
+    h3 { font-size:1.23rem; margin:15px 0 9px; letter-spacing:-.035em; }
+    .card p { color:var(--muted); margin:0; font-size:.95rem; }
+    .method { background:#e9eee8; border-radius:22px; padding:35px; }
+    .method ol { margin:15px 0 0; padding-left:1.45rem; }
+    .method li { margin:10px 0; }
+    .method strong { color:var(--brand); }
+    .disclosure { border-top:1px solid var(--line); margin-top:20px; padding-top:17px; color:var(--muted); font-size:.9rem; }
+    footer { border-top:1px solid var(--line); margin-top:42px; padding:27px 0 38px; color:var(--muted); font-size:.85rem; }
+    @media (max-width:750px) {
+      .top { align-items:flex-start; flex-direction:column; padding:17px 0; gap:6px; }
+      nav { gap:16px; flex-wrap:wrap; }
+      .hero { padding:66px 0 48px; }
+      .grid { grid-template-columns:1fr; }
+      .card { min-height:0; padding:22px; }
+      section { padding:35px 0; }
+      .method { padding:23px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container top">
+      <a class="logo" href="/" aria-label="GuideHollow Pick 홈">GUIDEHOLLOW <span>PICK</span></a>
+      <nav aria-label="주요 메뉴">
+        <a href="#criteria">선택 기준</a>
+        <a href="#method">운영 원칙</a>
+        <a href="#notice">광고 안내</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero container">
+      <span class="eyebrow">GuideHollow의 한국어 쇼핑 정보</span>
+      <h1>사기 전에,<br><em>기준부터</em> 살펴보세요.</h1>
+      <p class="lead">생활용품과 소형 가전의 구매 판단에 필요한 정보를 정리합니다. 제품의 장점뿐 아니라 세척, 소모품, 유지 비용처럼 구매 후에도 중요한 조건을 함께 살펴봅니다.</p>
+      <p class="note">사이트 준비 단계 · 검수된 개별 제품 비교 글은 순차적으로 공개할 예정입니다.</p>
+    </section>
+    <section class="container" id="criteria" aria-labelledby="criteria-title">
+      <div class="section-head">
+        <small>BUYING CRITERIA</small>
+        <h2 id="criteria-title">구매 전 확인할 질문</h2>
+        <p>제품 이름보다 먼저 자신의 사용 환경에 맞는 기준을 확인하세요.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="n">01 / 생활가전</span>
+          <h3>가습기 고르기</h3>
+          <p>물통 입구와 세척 가능한 부품, 설치 공간, 사용 환경, 정기적인 관리 방법을 확인합니다.</p>
+        </article>
+        <article class="card">
+          <span class="n">02 / 청소</span>
+          <h3>무선청소기 고르기</h3>
+          <p>총 무게, 배터리 교체 가능 여부, 필터·브러시 소모품 공급, 보관 방식을 비교합니다.</p>
+        </article>
+        <article class="card">
+          <span class="n">03 / 주방</span>
+          <h3>음식물처리기 고르기</h3>
+          <p>처리 방식, 설치 제약, 관리 주기, 소모품 비용, 지역별 배출 규칙을 확인합니다.</p>
+        </article>
+      </div>
+    </section>
+    <section class="container" id="method" aria-labelledby="method-title">
+      <div class="method">
+        <div class="section-head">
+          <small>EDITORIAL STANDARD</small>
+          <h2 id="method-title">이 사이트의 작성 원칙</h2>
+          <p>구매 결정에 실제로 도움이 되는 정보를 우선합니다.</p>
+        </div>
+        <ol>
+          <li><strong>확인 가능한 정보:</strong> 제품 사양은 공식 제조사 자료와 판매 정보를 출처와 함께 확인합니다.</li>
+          <li><strong>장점과 한계:</strong> 사용 환경에 따라 적합하지 않은 조건도 함께 설명합니다.</li>
+          <li><strong>시점 표시:</strong> 가격이나 판매 조건처럼 바뀔 수 있는 정보는 확인 시점을 명시합니다.</li>
+          <li><strong>후기 구분:</strong> 직접 사용하지 않은 제품을 실제 사용 후기처럼 표현하지 않습니다.</li>
+        </ol>
+      </div>
+    </section>
+    <section class="container" id="notice" aria-labelledby="notice-title">
+      <div class="section-head">
+        <small>DISCLOSURE</small>
+        <h2 id="notice-title">광고 및 제휴 링크 안내</h2>
+        <p>향후 일부 게시물에 제휴 링크가 포함될 수 있습니다. 해당 게시물에는 구매에 따른 수수료 발생 가능성을 글의 시작 부분에 명확히 고지합니다.</p>
+      </div>
+      <p class="disclosure">현재 이 초기 페이지에는 제휴 구매 링크가 없습니다. 콘텐츠, 가격, 판매 여부는 추후 개별 원고에서 검증 후 제공할 예정입니다.</p>
+    </section>
+  </main>
+  <footer><div class="container">© 2026 GuideHollow Pick · 독립적인 한국어 쇼핑 정보 페이지 · <a href="https://guidehollow.com/" rel="noopener">GuideHollow</a></div></footer>
+</body>
+</html>
